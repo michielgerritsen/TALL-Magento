@@ -93,7 +93,7 @@ class ShippingAddress extends Component
             $address = new Address(
                 $this->firstname,
                 $this->lastname,
-                $this->street,
+                [$this->street],
                 $this->postcode,
                 $this->city,
                 $this->country,

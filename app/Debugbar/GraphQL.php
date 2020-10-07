@@ -38,7 +38,7 @@ class GraphQL extends DataCollector implements Renderable
         return 'graphql';
     }
 
-    public function addQuery(string $query, array $result)
+    public function addQuery(string $query, array $result = null)
     {
         $this->count++;
         $name = $this->generateName($result);

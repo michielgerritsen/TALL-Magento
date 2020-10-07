@@ -39,3 +39,10 @@ after('deploy:failed', 'deploy:unlock');
 
 //before('deploy:symlink', 'artisan:migrate');
 
+desc('Restart php-fpm');
+task('php-fpm:restart', function () {
+    run('sudo service php7.4-fpm reload');
+});
+
+after('deploy:symlink', 'php-fpm:restart');
+
