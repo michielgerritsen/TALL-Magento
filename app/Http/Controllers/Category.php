@@ -60,21 +60,43 @@ QUERY;
 
     private function getProducts($id)
     {
-        return Cache::tags(['categories', 'categories.products'])->remember($id, 3600, function () use ($id) {
-            $query = <<<'QUERY'
-                query($id:String!) {
-                    products(filter:{category_id:{eq:$id}}) {
-                        items {
-                            PRODUCT_CONTENTS
+        $cache = Cache::tags(['categories', 'categories.products']);
+        if ($cache->has($id)) {
+            return $cache->get($id);
+        }
+
+        $query = <<<'QUERY'
+            query($id:String!) {
+                products(filter:{category_id:{eq:$id}}) {
+                    aggregations {
+                        attribute_code
+                        count
+                        label
+                        options {
+                            count
+                            label
+                            value
                         }
                     }
+                    items {
+                        PRODUCT_CONTENTS
+                    }
                 }
+            }
 QUERY;
 
-            return Arr::get(
-                GraphQL::query($query, ['id' => $id]),
-                'data.products.items'
-            );
-        });
+        $result = Arr::get(
+            GraphQL::query($query, ['id' => $id]),
+            'data.products.items'
+        );
+
+        $cache->put($id . '.aggregations', Arr::get(
+            GraphQL::query($query, ['id' => $id]),
+            'data.products.aggregations'
+        ));
+
+        $cache->put($id, $result);
+
+        return $result;
     }
 }

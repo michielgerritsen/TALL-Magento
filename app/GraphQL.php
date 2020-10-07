@@ -133,9 +133,9 @@ CARTCONTENTS;
                     value_index
                     label
                 }
-            product_id
+                product_id
+            }
         }
-    }
 PRODUCT;
 
     public static function query(string $query, array $variables = [], $debug = false)
