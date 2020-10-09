@@ -44,7 +44,7 @@ class GraphQL extends DataCollector implements Renderable
         $name = $this->generateName($result);
 
         $this->data[$name] = $this->formatVar([
-            'query' => $query,
+            'query' => trim($query),
             'result' => $result,
         ]);
     }

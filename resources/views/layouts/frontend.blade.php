@@ -24,7 +24,7 @@
 
     <div class="h-full w-128 fixed top-0 right-0 transform shadow-2xl bg-white"
          x-show="cartMenuOpen"
-         @click.away="cartMenuOpen = false"
+         x-on:click.away="cartMenuOpen = false"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0 transform"
          x-transition:enter-end="opacity-100 transform"

@@ -1,4 +1,4 @@
-<div class="relative" @click.away="submenuOpen = false" x-data="{submenuOpen: false}"
+<div class="relative" x-on:click.away="submenuOpen = false" x-data="{submenuOpen: false}"
      @mouseenter="submenuOpen = !submenuOpen"
      @mouseleave="submenuOpen = !submenuOpen"
 >

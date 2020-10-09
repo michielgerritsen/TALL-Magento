@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use App\DTO\ProductPrices;
 use Illuminate\View\Component;
+use Illuminate\View\View;
 
 class ProductPrice extends Component
 {
@@ -12,16 +13,21 @@ class ProductPrice extends Component
      */
     public $prices;
 
+    /**
+     * @var string
+     */
+    public $size;
+
     public function __construct(
-        ProductPrices $prices
+        ProductPrices $prices,
+        $size = 'big'
     ) {
         $this->prices = $prices;
+        $this->size = $size;
     }
 
     /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\View\View|string
+     * @return View
      */
     public function render()
     {

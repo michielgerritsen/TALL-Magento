@@ -18,7 +18,9 @@
 
 namespace App;
 
+use App\DTO\Category;
 use App\DTO\Product;
+use App\DTO\ProductList;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
@@ -97,5 +99,58 @@ QUERY;
         $cache->put('product.url.' . $result['url_key'], $result);
 
         return Product::fromGraphqlResponse($result);
+    }
+
+    /**
+     * @param Category $category
+     * @param array $selected
+     * @throws \ErrorException
+     * @return ProductList
+     */
+    public function getByCategory(Category $category, array $selected = []): ProductList
+    {
+        $filter = new AggregationsToFilters($selected + ['category_id' => $category->getId()]);
+        $cacheKey = $filter->getCacheKey();
+
+        $cache = Cache::tags(['categories', 'categories.products']);
+        if ($cache->has($cacheKey)) {
+            return ProductList::fromArray([
+                'items' => $cache->get($cacheKey),
+                'aggregations' => $cache->get($cacheKey . '.aggregations'),
+            ]);
+        }
+
+        $query = <<<'QUERY'
+            query(QUERY_CONTENTS) {
+                products(filter:FILTER_CONTENTS) {
+                    aggregations {
+                        attribute_code
+                        count
+                        label
+                        options {
+                            count
+                            label
+                            value
+                        }
+                    }
+                    items {
+                        PRODUCT_CONTENTS
+                    }
+                }
+            }
+QUERY;
+        $query = str_replace('QUERY_CONTENTS', $filter->getQueryDefinition(), $query);
+        $query = str_replace('FILTER_CONTENTS', $filter->getFilterDefinition(), $query);
+
+        $result = Arr::get(
+            GraphQL::query($query, $filter->getVariables()),
+            'data.products'
+        );
+
+        $cache->put($cacheKey . '.aggregations', $result['aggregations']);
+
+        $cache->put($cacheKey, $result['items']);
+
+        return ProductList::fromArray($result);
     }
 }

@@ -4,7 +4,7 @@
     </div>
 
     <div class="relative mx-auto pt-4 h-full">
-        <button class="mr-4 float-right p-2 hover:bg-black hover:text-white absolute right-0 z-10" @click="cartMenuOpen = false">
+        <button class="mr-4 float-right p-2 hover:bg-black hover:text-white absolute right-0 z-10" x-on:click="cartMenuOpen = false">
             X
             <span class="sr-only">Close menu</span>
         </button>

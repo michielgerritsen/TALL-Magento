@@ -1,13 +1,16 @@
+<?php /** @var \App\DTO\Category $category */ ?>
 @extends('layouts.frontend')
 
-@section('title', $category['name'])
+@section('title', $category->getName())
 
 @section('content')
 
-    <h1 class="text-4xl">{{$category['name']}}</h1>
+    <h1 class="text-4xl">{{$category->getName()}}</h1>
 
-{{--    @livewire('aggregations')--}}
+    <div class="grid grid-cols-5 gap-4">
+        @livewire('aggregations', ['categoryUrlKey' => $category->getUrlKey()])
 
-    @include('product-list')
+        @livewire('product-list', ['categoryUrlKey' => $category->getUrlKey()])
+    </div>
 
 @endsection

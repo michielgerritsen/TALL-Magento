@@ -8,7 +8,7 @@
     </label>
     <input x-model.number="quantity" id="quantity" type="number" value="1" name="quantity" class="border h-10 w-16 text-center mr-4 inline-block appearance-none bg-white border border-gray-400 hover:border-gray-500 pr-1 rounded shadow leading-tight focus:outline-none focus:shadow-outline h-12" />
 
-    <button @click="add" type="button" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded h-12">
+    <button x-on:click="add" type="button" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded h-12">
         Add To Cart
     </button>
 
