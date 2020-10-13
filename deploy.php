@@ -35,9 +35,28 @@ task('build', function () {
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
 
-// Migrate database before symlink new release.
+desc('Copy assets data');
+task('assets:upload', function () {
+    runLocally('npm run production');
+    writeln('Compiled assets');
 
-//before('deploy:symlink', 'artisan:migrate');
+    upload('public/js/', '{{release_path}}/public/js/');
+    writeln('Uploaded public/js/');
+
+    upload('public/css/', '{{release_path}}/public/css/');
+    writeln('Uploaded public/css/');
+
+//    upload('public/fonts/', '{{release_path}}/public/fonts/');
+//    writeln('Uploaded public/fonts/');
+
+//    upload('public/images/', '{{release_path}}/public/images/');
+//    writeln('Uploaded public/images/');
+
+//    upload('public/vendor/', '{{release_path}}/public/vendor/');
+//    writeln('Uploaded public/vendor/');
+});
+
+after('deploy:writable', 'assets:upload');
 
 desc('Restart php-fpm');
 task('php-fpm:restart', function () {
