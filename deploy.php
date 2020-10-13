@@ -46,3 +46,10 @@ task('php-fpm:restart', function () {
 
 after('deploy:symlink', 'php-fpm:restart');
 
+desc('Flush Laravel cache');
+task('artisan:cache:clear', function () {
+    run('cd {{release_path}} && {{bin/php}} artisan cache:clear');
+});
+
+after('deploy:symlink', 'artisan:cache:clear');
+
