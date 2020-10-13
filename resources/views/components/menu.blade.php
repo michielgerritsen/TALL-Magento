@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-5 sm:px-6 sm:py-4 lg:px-8 md:justify-start md:space-x-10">
             <div>
                 <a href="/" class="flex">
-                    <img class="h-8 w-auto sm:h-10" src="https://tailwindui.com/img/logos/workflow-mark-on-white.svg" alt="Workflow">
+                    <img class="h-8 w-auto sm:h-10" src="{{ asset('logo.svg') }}" alt="Workflow">
                 </a>
             </div>
             <div class="-mr-2 -my-2 md:hidden">
