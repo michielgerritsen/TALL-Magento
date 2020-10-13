@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "ext-json": "*",
         "beberlei/assert": "^3.2",
         "deployer/deployer": "^6.8",
         "fideloper/proxy": "^4.2",
@@ -17,7 +18,7 @@
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.0",
-        "ext-json": "*"
+        "sentry/sentry-laravel": "^2.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
