@@ -36,7 +36,7 @@
         @livewire('cart')
     </div>
 
-    <script src="{{ mix('js/app.js') }}"></script>
     @livewireScripts
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

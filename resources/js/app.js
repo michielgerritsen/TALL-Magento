@@ -1,3 +1,5 @@
 import 'alpinejs'
 
-// require('./bootstrap');
+Livewire.on('add-to-cart', postId => {
+    document.body.dispatchEvent(new Event('menu-open'));
+})
