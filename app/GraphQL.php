@@ -78,6 +78,36 @@ class GraphQL
                 }
             }
         }
+        applied_taxes {
+            amount {
+                currency
+                value
+            }
+            label
+        },
+        discounts {
+            amount {
+                currency
+                value
+            }
+            label
+        }
+        grand_total {
+            currency
+            value
+        }
+        subtotal_excluding_tax {
+            currency
+            value
+        }
+        subtotal_including_tax {
+            currency
+            value
+        }
+        subtotal_with_discount_excluding_tax {
+            currency
+            value
+        }
 CARTCONTENTS;
 
     const PRODUCT_CONTENTS = <<<'PRODUCT'
@@ -175,10 +205,6 @@ PRODUCT;
                 ]
             ]))) {
             $error = error_get_last();
-
-//            dd($query, $variables);
-
-
 
             throw new \ErrorException($error['message'], $error['type']);
         }
