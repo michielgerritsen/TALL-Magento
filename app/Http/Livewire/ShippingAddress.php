@@ -57,9 +57,14 @@ class ShippingAddress extends Component
             return;
         }
 
+        $street = $address->getStreet();
+        if ($street) {
+            $street = $street[0];
+        }
+
         $this->firstname = $address->getFirstname();
         $this->lastname = $address->getLastname();
-        $this->street = $address->getStreet();
+        $this->street = $street;
         $this->postcode = $address->getPostcode();
         $this->city = $address->getCity();
         $this->country = $address->getCountry();

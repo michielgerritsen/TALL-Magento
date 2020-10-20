@@ -17,7 +17,7 @@ Secondly, i love to work with Laravel, and i know a lot of fellow Magento develo
 
 # Barely any Javascript? How?
 
-For a big part that credit goes to Livewire. TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODO 
+For a big part that credit goes to Livewire. See my Reaction talk for an in depth overview.  
 
 # Is this production ready?
 
@@ -36,5 +36,19 @@ No, currently there is support for these product types:
 |Downloadable|❌|
 |Virtual|❌|
 
-Missing features:
+These are the known features that are not supported (yet), but there are dozens of feature more that should be on this list:
 - Separate billing and addresses
+- Customer login, only guests are supported
+- Customer pricing
+- It's not responsive
+- Probably loads and loads more features.
+
+# The proof in the pudding
+
+I did a quick screencast so you can get a grasp of what this entails:
+
+[![TALL Magento presentation](https://img.youtube.com/vi/0upyB6NbLnc/0.jpg)](https://www.youtube.com/watch?v=0upyB6NbLnc)
+
+You can check this out yourself at this URL:
+
+[https://tall-magento.controlaltdelete.nl/](https://tall-magento.controlaltdelete.nl/)
