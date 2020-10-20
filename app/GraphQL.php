@@ -18,6 +18,8 @@
 
 namespace App;
 
+use App\Exceptions\GraphqlError;
+
 class GraphQL
 {
     const CART_CONTENTS = <<<'CARTCONTENTS'
@@ -77,36 +79,6 @@ class GraphQL
                     value_label
                 }
             }
-        }
-        applied_taxes {
-            amount {
-                currency
-                value
-            }
-            label
-        },
-        discounts {
-            amount {
-                currency
-                value
-            }
-            label
-        }
-        grand_total {
-            currency
-            value
-        }
-        subtotal_excluding_tax {
-            currency
-            value
-        }
-        subtotal_including_tax {
-            currency
-            value
-        }
-        subtotal_with_discount_excluding_tax {
-            currency
-            value
         }
 CARTCONTENTS;
 
@@ -216,8 +188,7 @@ PRODUCT;
         }
 
         if (config('app.debug') && isset($result['errors'])) {
-            dump($query);
-            dd($result['errors']);
+            throw new GraphqlError(['query' => $query, 'errors' => $result['errors']]);
         }
 
         return $result;
