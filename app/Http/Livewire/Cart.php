@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\CartRepository;
+use App\DTO\Product;
 use App\ProductRepository;
 use Livewire\Component;
 
@@ -18,7 +19,7 @@ class Cart extends Component
     {
         $product = $productRepository->getBySku($sku);
 
-        if ($product->getTypeId() != \App\DTO\Product::SIMPLE) {
+        if ($product->getTypeId() != Product::SIMPLE) {
             return redirect()->route('product', $product->getUrlKey());
         }
 
