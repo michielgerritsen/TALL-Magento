@@ -7,12 +7,12 @@ use Livewire\Component;
 
 class OrderTotals extends Component
 {
+    protected $listeners = ['update-order-totals' => '$refresh'];
+
     public function render(CartRepository $cartRepository)
     {
-        $cart = $cartRepository->get();
-
         return view('livewire.order-totals', [
-            'cart' => $cart,
+            'totals' => $cartRepository->getTotals(),
         ]);
     }
 }

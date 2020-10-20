@@ -43,12 +43,12 @@ class CartTotals
     private $subtotalWithDiscountExcludingTax;
 
     /**
-     * @var Price[]
+     * @var LabeledPrice[]
      */
     private $appliedTaxes;
 
     /**
-     * @var Price[]
+     * @var LabeledPrice[]
      */
     private $discounts;
 
@@ -73,31 +73,35 @@ class CartTotals
 
     public static function fromArray(array $data): CartTotals
     {
-        $appliedTaxes = [];
-        $discounts = [];
-
-        foreach ($data['applied_taxes'] as $appliedTax) {
-            $appliedTaxes[] = new LabeledPrice(
-                $appliedTax['label'],
-                new Price($appliedTax['currency'], $appliedTax['value'])
-            );
-        }
-
-        foreach ($data['discounts'] as $discount) {
-            $discounts[] = new LabeledPrice(
-                $discount['label'],
-                new Price($discount['currency'], $discount['value'])
-            );
-        }
-
         return new static(
             new Price($data['grand_total']['currency'], $data['grand_total']['value']),
             new Price($data['subtotal_excluding_tax']['currency'], $data['subtotal_excluding_tax']['value']),
             new Price($data['subtotal_including_tax']['currency'], $data['subtotal_including_tax']['value']),
             new Price($data['subtotal_with_discount_excluding_tax']['currency'], $data['subtotal_with_discount_excluding_tax']['value']),
-            $appliedTaxes,
-            $discounts
+            self::parsePriceArray('applied_taxes', $data),
+            self::parsePriceArray('discounts', $data)
         );
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    private static function parsePriceArray(string $key, array $data): array
+    {
+        if (!$data[$key]) {
+            return [];
+        }
+
+        $output = [];
+        foreach ($data[$key] as $price) {
+            $output[] = new LabeledPrice(
+                $price['label'],
+                new Price($price['amount']['currency'], $price['amount']['value'])
+            );
+        }
+
+        return $output;
     }
 
     /**
@@ -133,7 +137,7 @@ class CartTotals
     }
 
     /**
-     * @return Price[]
+     * @return LabeledPrice[]
      */
     public function getAppliedTaxes(): array
     {
@@ -141,7 +145,7 @@ class CartTotals
     }
 
     /**
-     * @return Price[]
+     * @return LabeledPrice[]
      */
     public function getDiscounts(): array
     {
