@@ -110,6 +110,7 @@ class ShippingAddress extends Component
             $checkoutRepository->setShippingAddress($address, $this->email);
 
             $this->emit('shipping-methods:load');
+            $this->emit('update-order-totals');
         }
 
         return view('livewire.shipping-address');

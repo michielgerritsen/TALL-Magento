@@ -19,6 +19,7 @@
 namespace App;
 
 use App\DTO\Address;
+use App\DTO\CartTotals;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -165,6 +166,11 @@ QUERY;
 
         $this->cache->forget('shipping-address');
     }
+
+//    public function getTotals()
+//    {
+//        return CartTotals::fromArray($data);
+//    }
 
     private function query(string $query, array $variables, string $contentNode)
     {

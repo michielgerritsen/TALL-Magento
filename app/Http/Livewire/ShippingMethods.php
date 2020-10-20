@@ -52,6 +52,8 @@ GRAPHQL;
             'carrierCode' => $carrier,
             'methodCode' => $method,
         ]);
+
+        $this->emit('update-order-totals');
     }
 
     public function render(CheckoutRepository $repository)

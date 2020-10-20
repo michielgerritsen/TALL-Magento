@@ -18,6 +18,8 @@
 
 namespace App;
 
+use App\Exceptions\GraphqlError;
+
 class GraphQL
 {
     const CART_CONTENTS = <<<'CARTCONTENTS'
@@ -176,10 +178,6 @@ PRODUCT;
             ]))) {
             $error = error_get_last();
 
-//            dd($query, $variables);
-
-
-
             throw new \ErrorException($error['message'], $error['type']);
         }
 
@@ -190,8 +188,7 @@ PRODUCT;
         }
 
         if (config('app.debug') && isset($result['errors'])) {
-            dump($query);
-            dd($result['errors']);
+            throw new GraphqlError(['query' => $query, 'errors' => $result['errors']]);
         }
 
         return $result;

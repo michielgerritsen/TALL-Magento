@@ -32,6 +32,8 @@ QUERY;
             'cartId' => Session::get('cart-id'),
             'method' => $method,
         ]);
+
+        $this->emit('update-order-totals');
     }
 
     public function render()

@@ -18,6 +18,7 @@
 
 namespace App;
 
+use App\DTO\CartTotals;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -49,6 +50,55 @@ class CartRepository
         }
 
         return DTO\Cart::fromArray($cart);
+    }
+
+    public function getTotals(): CartTotals
+    {
+        $query = <<<'QUERY'
+        query($cartId: String!) {
+            cart(cart_id: $cartId) {
+                prices {
+                    applied_taxes {
+                        amount {
+                            currency
+                            value
+                        }
+                        label
+                    },
+                    discounts {
+                        amount {
+                            currency
+                            value
+                        }
+                        label
+                    }
+                    grand_total {
+                        currency
+                        value
+                    }
+                    subtotal_excluding_tax {
+                        currency
+                        value
+                    }
+                    subtotal_including_tax {
+                        currency
+                        value
+                    }
+                    subtotal_with_discount_excluding_tax {
+                        currency
+                        value
+                    }
+                }
+            }
+        }
+QUERY;
+
+        $result = Arr::get(
+            GraphQL::query($query, ['cartId' => Session::get('cart-id')]),
+            'data.cart.prices'
+        );
+
+        return CartTotals::fromArray($result);
     }
 
     /**

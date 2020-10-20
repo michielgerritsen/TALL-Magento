@@ -16,6 +16,8 @@
         </div>
 
         <div class="mt-5 md:mt-0 md:col-span-1">
+            @livewire('order-totals')
+
             @livewire('place-order')
         </div>
     </div>
