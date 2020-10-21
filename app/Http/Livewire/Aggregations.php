@@ -24,9 +24,14 @@ class Aggregations extends Component
     public $selected = [];
 
     /**
+     * @var int
+     */
+    public $page = 1;
+
+    /**
      * @var string[]
      */
-    protected $queryString = ['selected'];
+    protected $queryString = ['selected', 'page'];
 
     public function updatingPrice($value)
     {
@@ -50,7 +55,7 @@ class Aggregations extends Component
     public function render(CategoryRepository $categoryRepository, ProductRepository $productRepository)
     {
         $category = $categoryRepository->getByUrlKey($this->categoryUrlKey);
-        $aggregations = $productRepository->getByCategory($category, $this->selected)->getAggregations();
+        $aggregations = $productRepository->getByCategory($category, $this->page, $this->selected)->getAggregations();
 
         return view('livewire.aggregations', [
             'aggregations' => $aggregations,

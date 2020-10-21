@@ -103,26 +103,30 @@ QUERY;
 
     /**
      * @param Category $category
+     * @param int $page
      * @param array $selected
+     * @throws Exceptions\GraphqlError
      * @throws \ErrorException
      * @return ProductList
      */
-    public function getByCategory(Category $category, array $selected = []): ProductList
+    public function getByCategory(Category $category, int $page, array $selected = []): ProductList
     {
         $filter = new AggregationsToFilters($selected + ['category_id' => $category->getId()]);
-        $cacheKey = $filter->getCacheKey();
+        $paginator = new Paginator(config('services.magento.products_per_page'), $page);
+        $cacheKey = $filter->getCacheKey() . '-' . $paginator->getCurrentPage();
 
         $cache = Cache::tags(['categories', 'categories.products']);
         if ($cache->has($cacheKey)) {
             return ProductList::fromArray([
                 'items' => $cache->get($cacheKey),
                 'aggregations' => $cache->get($cacheKey . '.aggregations'),
+                'page_info' => $cache->get($cacheKey . '.page_info'),
             ]);
         }
 
         $query = <<<'QUERY'
             query(QUERY_CONTENTS) {
-                products(filter:FILTER_CONTENTS) {
+                products(filter:FILTER_CONTENTS,pageSize:PAGE_SIZE,currentPage:CURRENT_PAGE) {
                     aggregations {
                         attribute_code
                         count
@@ -136,21 +140,29 @@ QUERY;
                     items {
                         PRODUCT_CONTENTS
                     }
+                    total_count
+                    page_info {
+                        current_page
+                        page_size
+                        total_pages
+                    }
                 }
             }
 QUERY;
         $query = str_replace('QUERY_CONTENTS', $filter->getQueryDefinition(), $query);
         $query = str_replace('FILTER_CONTENTS', $filter->getFilterDefinition(), $query);
+        $query = str_replace('PAGE_SIZE', $paginator->getPageSize(), $query);
+        $query = str_replace('CURRENT_PAGE', $paginator->getCurrentPage(), $query);
 
         $result = Arr::get(
             GraphQL::query($query, $filter->getVariables()),
             'data.products'
         );
 
+        $cache->put($cacheKey . '.page_info', ['total_count' => $result['total_count']] + $result['page_info']);
         $cache->put($cacheKey . '.aggregations', $result['aggregations']);
-
         $cache->put($cacheKey, $result['items']);
 
-        return ProductList::fromArray($result);
+        return $this->getByCategory(...func_get_args());
     }
 }

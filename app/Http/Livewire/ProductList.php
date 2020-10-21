@@ -20,6 +20,11 @@ class ProductList extends Component
     public $categoryUrlKey;
 
     /**
+     * @var int
+     */
+    public $page = 1;
+
+    /**
      * @var array
      */
     public $selected = [];
@@ -27,7 +32,7 @@ class ProductList extends Component
     /**
      * @var string[]
      */
-    protected $queryString = ['selected'];
+    protected $queryString = ['selected', 'page'];
 
     protected $listeners = [
         'update-aggregations' => 'setSelected',
@@ -38,15 +43,23 @@ class ProductList extends Component
         $this->selected = $selected;
     }
 
+    public function setPage(int $page)
+    {
+        $this->page = $page;
+
+        $this->dispatchBrowserEvent('scrollToTop');
+    }
+
     public function render(CategoryRepository $categoryRepository, ProductRepository $productRepository)
     {
         $category = $categoryRepository->getByUrlKey($this->categoryUrlKey);
-        $productList = $productRepository->getByCategory($category, $this->selected);
+        $productList = $productRepository->getByCategory($category, $this->page, $this->selected);
 
         return view('livewire.product-list', [
             'category' => $category,
             'products' => $productList->getProducts(),
             'aggregations' => $productList->getAggregations(),
+            'paginator' => $productList->getPagination()->getPaginator(),
         ]);
     }
 }

@@ -32,6 +32,10 @@ return [
 
     'graphql' => [
         'endpoint' => env('GRAPHQL_ENDPOINT'),
+    ],
+
+    'magento' => [
+        'products_per_page' => env('PRODUCTS_PER_PAGE', 20),
     ]
 
 ];
