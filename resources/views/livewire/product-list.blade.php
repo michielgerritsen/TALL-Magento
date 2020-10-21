@@ -39,5 +39,7 @@
         @endforeach
     </ul>
 
+    @isset($paginator)
     {{ $paginator->links() }}
+    @endif
 </div>
