@@ -26,13 +26,10 @@ class GraphqlError extends \Exception
     {
         ['query' => $query, 'errors' => $errors] = $data;
 
-        $message = 'Query:' . PHP_EOL . $query;
-
         $errors = collect($errors);
 
-        $errorMessages = $errors->pluck('message');
-
-        dd($errorMessages);
+        $message = $errors->pluck('message')->join(PHP_EOL);
+        $message .= 'Query:' . PHP_EOL . $query;
 
         parent::__construct($message, $code, $previous);
     }
