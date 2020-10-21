@@ -32,13 +32,20 @@ class ProductList
      */
     private $aggregations;
 
+    /**
+     * @var Pagination
+     */
+    private $pagination;
+
     public function __construct(
         array $products,
-        array $aggregations
+        array $aggregations,
+        Pagination $pagination
     ) {
         Assertion::allIsInstanceOf($products, Product::class);
         $this->products = $products;
         $this->aggregations = $aggregations;
+        $this->pagination = $pagination;
     }
 
     public static function fromArray(array $data): ProductList
@@ -51,7 +58,13 @@ class ProductList
 
         return new static(
             array_map(function ($data) { return \App\DTO\Product::fromGraphqlResponse($data);}, $data['items']),
-            $aggregations
+            $aggregations,
+            new Pagination(
+                $data['page_info']['total_count'],
+                $data['page_info']['current_page'],
+                $data['page_info']['page_size'],
+                $data['page_info']['total_pages']
+            )
         );
     }
 
@@ -69,5 +82,13 @@ class ProductList
     public function getAggregations(): array
     {
         return $this->aggregations;
+    }
+
+    /**
+     * @return Pagination
+     */
+    public function getPagination(): Pagination
+    {
+        return $this->pagination;
     }
 }

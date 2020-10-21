@@ -1,4 +1,8 @@
-<div class="col-span-4">
+<div class="col-span-4" @scrollToTop.window="alert('ScrollToTop');">
+    <div class="absolute w-full h-full bg-gray-700 z-50 bg-opacity-75 flex hidden" wire:loading.class.remove="hidden">
+        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32 m-auto"></div>
+    </div>
+
     <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
         <?php /** @var \App\DTO\Product $product */ ?>
@@ -34,4 +38,6 @@
 
         @endforeach
     </ul>
+
+    {{ $paginator->links() }}
 </div>
