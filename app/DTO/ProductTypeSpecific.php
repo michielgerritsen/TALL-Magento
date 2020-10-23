@@ -18,19 +18,27 @@
 
 namespace App\DTO;
 
+use App\DTO\ProductType\Bundle;
 use App\DTO\ProductType\Configurable;
 
 class ProductTypeSpecific
 {
     /**
-     * @var Configurable
+     * @var Configurable|null
      */
     private $configurable;
 
+    /**
+     * @var Bundle|null
+     */
+    private $bundle;
+
     private function __construct(
-        Configurable $configurable = null
+        Configurable $configurable = null,
+        Bundle $bundle = null
     ) {
         $this->configurable = $configurable;
+        $this->bundle = $bundle;
     }
 
     public static function fromArray(array $data): ProductTypeSpecific
@@ -40,14 +48,27 @@ class ProductTypeSpecific
             $configurable = Configurable::fromArray($data['configurable_options']);
         }
 
+        $bundle = null;
+        if ($data['__typename'] == 'BundleProduct') {
+            $bundle = Bundle::fromArray($data);
+        }
+
         return new static($configurable);
     }
 
     /**
      * @return Configurable
      */
-    public function getConfigurable(): Configurable
+    public function getConfigurable(): ?Configurable
     {
         return $this->configurable;
+    }
+
+    /**
+     * @return Bundle|null
+     */
+    public function getBundle(): ?Bundle
+    {
+        return $this->bundle;
     }
 }

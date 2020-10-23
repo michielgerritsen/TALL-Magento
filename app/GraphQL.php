@@ -138,6 +138,60 @@ CARTCONTENTS;
                 product_id
             }
         }
+        ...on BundleProduct {
+            dynamic_sku
+            dynamic_price
+            price_view
+            price_range {
+                maximum_price {
+                    discount {
+                        amount_off
+                        percent_off
+                    }
+                    final_price {
+                        currency
+                        value
+                    }
+                    fixed_product_taxes {
+                        label
+                    }
+                    regular_price {
+                        currency
+                        value
+                    }
+                }
+                minimum_price {
+                    discount {
+                        amount_off
+                        percent_off
+                    }
+                    final_price {
+                        currency
+                        value
+                    }
+                    fixed_product_taxes {
+                        label
+                    }
+                    regular_price {
+                        currency
+                        value
+                    }
+                    }
+            }
+            items {
+                title
+                sku
+                type
+                options {
+                    label
+                    is_default
+                    price
+                    price_type
+                    quantity
+                    can_change_quantity
+                }
+            }
+        }
 PRODUCT;
 
     public static function query(string $query, array $variables = [], $debug = false)

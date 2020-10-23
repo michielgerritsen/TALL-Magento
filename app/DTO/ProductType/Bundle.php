@@ -16,21 +16,20 @@
  *
  */
 
-namespace App\Exceptions;
+namespace App\DTO\ProductType;
 
-use Throwable;
-
-class GraphqlError extends \Exception
+class Bundle
 {
-    public function __construct($data, $code = 0, Throwable $previous = null)
+    public function __construct(
+        bool $dynamicSku,
+        bool $dynamicPrice,
+        string $priceView,
+        PriceRange $priceRange
+    ) {
+    }
+
+    public static function fromArray(array $data)
     {
-        ['query' => $query, 'errors' => $errors] = $data;
 
-        $errors = collect($errors);
-
-        $message = $errors->pluck('message')->join(PHP_EOL);
-        $message .= 'Query:' . PHP_EOL . $query;
-
-        parent::__construct($message, $code, $previous);
     }
 }
