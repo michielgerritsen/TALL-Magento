@@ -17,7 +17,7 @@ Secondly, i love to work with Laravel, and i know a lot of fellow Magento develo
 
 # Barely any Javascript? How?
 
-For a big part that credit goes to Livewire. See my Reaction talk for an in depth overview.  
+For a big part that credit goes to Livewire. [See my Reaction talk](https://www.youtube.com/watch?v=MC36voF-2BA) for an in depth overview.  
 
 # Is this production ready?
 
